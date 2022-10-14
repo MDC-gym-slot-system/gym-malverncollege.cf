@@ -1,3 +1,6 @@
 # gym-malverncollege.cf
 Main website for MDC gym slot sytem<br>
-All change done in this repo will trigger a redeployment in https://gym-slot.cf/ and https://gymslot.cf/
+All change done in this repo will trigger a redeployment in:<br>
+[gym-malverncollege.cf](https://gym-malverncollege.cf/), [gymslot.cf](https://gymslot.cf/) and [gym-slot.cf](https://gymslot.cf/)
+
+
