@@ -12,7 +12,7 @@ def register():
     return "This is the future register page"
 
 
-@app.route('/reset_password')
+@app.route('/password_reset')
 def reset_password():
     return "This is the future reset password page"
 
