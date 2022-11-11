@@ -5,8 +5,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def sign_in():
     if request.method == "POST":
-        print(f"request.form['email_address']")
-        print(f"request.form['password']")
         return (
             f"you logged in as {request.form['email_address']}<br>"
             f"your password is {request.form['password']}"
