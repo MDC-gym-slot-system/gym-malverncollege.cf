@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+import pandas as pd
+
 app = Flask(__name__)
 
 
@@ -12,10 +14,11 @@ def sign_in():
 
     return render_template('sign_in.html')
 
-
-
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == "POST":
+        df = pd.read_excel(r'.\static\excel_sheets\emails.xlsx')
+        return df.to_html()
     return render_template('register.html')
 
 

@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "head.html" %}
+{% block head %}
     <title>Sign in html page</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/sign_in.css') }}">
-</head>
-<body>
+{% endblock %}
+{% block body %}
     <p>This is the sign in html page</p>
     <form action="{{ url_for('sign_in')}}" method="post">
         <label for="email_address">Your email address:</label>
@@ -23,7 +21,6 @@
         <input type="submit" value="Go to register page" />
     </form>
     <form action="/password_reset">
-    <input type="submit" value="Go to password reset page" />
-</form>
-</body>
-</html>
+        <input type="submit" value="Go to password reset page" />
+    </form>
+{% endblock %}

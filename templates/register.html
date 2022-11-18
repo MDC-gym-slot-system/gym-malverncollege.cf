@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register page</title>
-</head>
-<body>
+{% extends "head.html" %}
+{% block head %}
+    <title>register page</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/sign_in.css') }}">
+{% endblock %}
+
+{% block body %}
     <p>This is the register html page</p>
-</body>
-</html>
+    <form action="{{ url_for('register')}}" method="post">
+        <label for="email_register">Your email address:</label>
+            <br>
+            <input type="text" id="email_register" name="email_address" placeholder="your email address">
+        <br>
+        <label for="password_register">Your password:</label>
+            <br>
+            <input type="text" id="password_register" name="password" placeholder="Your password">
+        <br>
+        <button type="submit">html forms example</button>
+    </form>
+    <br><br>
+    <form action="/register">
+        <input type="submit" value="Go to register page" />
+    </form>
+    <form action="/password_reset">
+        <input type="submit" value="Go to password reset page" />
+    </form>
+{% endblock %}
