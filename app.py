@@ -17,7 +17,7 @@ def sign_in():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
-        df = pd.read_excel(r'.\static\excel_sheets\emails.xlsx')
+        df = pd.read_excel(r'.\static\excel_sheets\emails.xlsx')  # read excel file
         return df.to_html()
     return render_template('register.html')
 
