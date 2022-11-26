@@ -9,7 +9,7 @@
         <form method="POST" action="{{ url_for('register')}}">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Register an account to book gymslots today!</legend>
+                    <legend class="border-bottom mb-4">Register a gymslot account today!</legend>
                     <div class="form-group">
                         {{ form.email.label(class="form-control-label") }}
                         {% if form.email.errors %}
