@@ -36,10 +36,6 @@ class RegisterForm(FlaskForm):
 
 
 
-class OneTimePasscodeForm(FlaskForm):
-    passcode = StringField('passcode', validators=[DataRequired()])
+class PasswordReset(FlaskForm):
+    email = StringField('email', validators=[DataRequired(), Email()])
     submit = SubmitField('submit')
-
-    def validate_passcode(self, passcode):
-        #depending on the way of generating the passcode, this will need to be changed
-        pass

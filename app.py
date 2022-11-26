@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash
 from pymongo import MongoClient
-from forms import LoginForm, RegisterForm, OneTimePasscodeForm
+from forms import LoginForm, RegisterForm, PasswordReset
 from os import getenv
 from dotenv import load_dotenv
 load_dotenv()
@@ -14,10 +14,7 @@ def sign_in():
     form = LoginForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            return (
-                f"you logged in as {request.form['email']}<br>"
-                f"your password is {request.form['password']}"
-            )
+            flash("You logged in successfully", "success")
 
     return render_template('sign_in.html', form=form)
 
@@ -26,23 +23,21 @@ def register():
     form = RegisterForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            #create one time passcode linked to email and password
-            #send email to user with one time passcode
-
-            return redirect(url_for('one_time_passcode'))
+            flash("You registered successfully", "success")
+            return redirect(url_for('sign_in'))
 
 
     return render_template('register.html', form=form)
 
 
-@app.route('/password_reset')
-def reset_password():
-    return render_template('password_reset.html')
-
-@app.route('/one_time_passcode', methods=['GET', 'POST'])
-def one_time_passcode():
-    form = OneTimePasscodeForm()
-    return render_template('one_time_passcode.html', form=form)
+@app.route('/password_reset', methods=['GET', 'POST'])
+def password_reset():
+    form = PasswordReset()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            flash("You reset your password successfully", "success")
+            return redirect(url_for('sign_in'))
+    return render_template('password_reset.html', form=PasswordReset())
 
 
 if __name__ == "__main__":
