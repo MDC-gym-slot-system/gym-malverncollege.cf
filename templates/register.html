@@ -5,23 +5,62 @@
 {% endblock %}
 
 {% block body %}
-    <p>This is the register html page</p>
-    <form action="{{ url_for('register')}}" method="post">
-        <label for="email_register">Your email address:</label>
-            <br>
-            <input type="text" id="email_register" name="email_address" placeholder="your email address">
-        <br>
-        <label for="password_register">Your password:</label>
-            <br>
-            <input type="text" id="password_register" name="password" placeholder="Your password">
-        <br>
-        <button type="submit">html forms example</button>
-    </form>
-    <br><br>
-    <form action="/register">
-        <input type="submit" value="Go to register page" />
-    </form>
-    <form action="/password_reset">
-        <input type="submit" value="Go to password reset page" />
-    </form>
+    <div class="content-section">
+        <form method="POST" action="{{ url_for('register')}}">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Register an account to book gymslots today!</legend>
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label(class="form-control-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.confirm_password.label(class="form-control-label") }}
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{{ url_for('sign_in') }}">Sign In</a>
+            <a class="ml-2" href="{{ url_for('reset_password') }}">Reset Your password</a>
+        </small>
+    </div>
+
+
 {% endblock %}

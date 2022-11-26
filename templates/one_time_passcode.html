@@ -1,0 +1,38 @@
+{% extends "head.html" %}
+{% block head %}
+    <title>One time passcode page</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/sign_in.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="content-section">
+        <form method="POST" action="{{ url_for('one_time_passcode')}}">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Input your one time passcode</legend>
+                    <div class="form-group">
+                        {{ form.passcode.label(class="form-control-label") }}
+                        {% if form.passcode.errors %}
+                            {{ form.passcode(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.passcode.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.passcode(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{{ url_for('register') }}">Register an account</a>
+            <a class="ml-2" href="{{ url_for('reset_password') }}">Reset Your password</a>
+        </small>
+    </div>
+
+{% endblock %}
