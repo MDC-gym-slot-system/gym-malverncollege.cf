@@ -60,10 +60,10 @@ def verify_email(token):
         flash("Your email has been verified", "success")
         return redirect(url_for('sign_in'))
     except SignatureExpired:
-        flash("Your token is expired, please register again", "danger")
+        flash("Your token is expired, please register your account again", "danger")
         return redirect(url_for('register'))
     except BadTimeSignature:
-        flash("Your token is invalid, please register again", "danger")
+        flash("Your token is invalid, please register your account again", "danger")
         return redirect(url_for('register'))
 
 
