@@ -26,7 +26,7 @@ def sign_in():
     return render_template('sign_in.html', form=form)
 
 def send_verification_email(email, token):
-    #need to set up email server, don't know how to do this
+    #need to set up email server, Bruno do this
     pass
 
 def save_user_in_database(email, password):
@@ -43,6 +43,7 @@ def register():
             save_user_in_database(email, password)
             send_verification_email(email, token)
             flash(f"Your token is {token}", "success")  # for testing purposes
+            # flash("You registered successfully, please check your email to verify your account", "success")
             return redirect(url_for('sign_in'))
 
     return render_template('register.html', form=form)
@@ -50,6 +51,7 @@ def register():
 
 def verify_user(email):
     website_db["registered_accounts"].update_one({"email": email}, {"$set": {"verified": True}})
+
 
 
 @app.route('/verify_email/<token>', methods=['GET', 'POST'])
@@ -72,7 +74,6 @@ def password_reset():
     form = PasswordReset()
     if request.method == "POST":
         if form.validate_on_submit():
-
             flash("You reset your password successfully", "success")
             return redirect(url_for('sign_in'))
     return render_template('password_reset.html', form=PasswordReset())
