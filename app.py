@@ -1,5 +1,6 @@
 from os import getenv
 from forms import LoginForm, RegisterForm, PasswordReset
+from pandas import read_excel
 
 from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_mail import Mail, Message
@@ -50,8 +51,13 @@ def register():
 
 
 def verify_user(email):
-    website_db["registered_accounts"].update_one({"email": email}, {"$set": {"verified": True}})
-
+    emails_allowed_to_register_account = read_excel(r'./static/excel_sheets/emails.xlsx')
+    group = emails_allowed_to_register_account.loc[emails_allowed_to_register_account['email'] == email, 'group'].values[0]
+    house = emails_allowed_to_register_account.loc[emails_allowed_to_register_account['email'] == email, 'house'].values[0]
+    website_db["registered_accounts"].update_one(
+        {"email": email},
+        {"$set": {"verified": True, "group": int(group), "house": int(house)}},
+    )
 
 
 @app.route('/verify_email/<token>', methods=['GET', 'POST'])
