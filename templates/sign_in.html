@@ -3,6 +3,7 @@
     <title>Sign in html page</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/sign_in.css') }}">
 {% endblock %}
+
 {% block body %}
     <div class="content-section">
         <form method="POST" action="{{ url_for('sign_in')}}">
@@ -47,6 +48,5 @@
             <a class="ml-2" href="{{ url_for('password_reset') }}">Reset Your password</a>
         </small>
     </div>
-
 {% endblock %}
 

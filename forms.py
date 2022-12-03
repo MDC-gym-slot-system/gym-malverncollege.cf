@@ -1,6 +1,7 @@
 from os import getenv
 from re import search
 
+from flask_bcrypt import check_password_hash
 from pandas import read_excel
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, ValidationError
@@ -14,9 +15,25 @@ mdc_challenge_cluster = MongoClient(getenv("MongoDbSecretKey"))
 website_db = mdc_challenge_cluster["website"]
 
 
+def is_email_verified(form, email):
+    found_account = website_db["registered_accounts"].find_one({"email": email.data})
+    if found_account:
+        if not found_account["verified"]:
+            raise ValidationError('Email not verified, check your email to verify your account')
+    elif not found_account:
+        raise ValidationError('Email not registered, register an account')
+
+
+def is_password_valid(form, password):
+    found_account = website_db["registered_accounts"].find_one({"email": form.email.data})
+    if found_account:
+        if not check_password_hash(found_account["password"], password.data):
+            raise ValidationError('Incorrect password')
+
+
 class LoginForm(FlaskForm):
-    email = StringField('Email Address', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField('Email Address', validators=[DataRequired(), Email(), is_email_verified])
+    password = PasswordField('Password', validators=[DataRequired(), is_password_valid])
     submit = SubmitField('Sign In')
 
 

@@ -2,6 +2,7 @@ from os import getenv
 from forms import LoginForm, RegisterForm, PasswordReset
 from pandas import read_excel
 
+from flask_bcrypt import generate_password_hash
 from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
@@ -22,12 +23,12 @@ def sign_in():
     form = LoginForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            flash("You logged in successfully", "success")
+            flash("You logged in successfully", "success")  # for now
 
     return render_template('sign_in.html', form=form)
 
 def send_verification_email(email, token):
-    #need to set up email server, Bruno do this
+    #need to set up email server, wait for email from IT
     pass
 
 def save_user_in_database(email, password):
@@ -41,7 +42,7 @@ def register():
             email, password = form.email.data, form.password.data
             token = serializer.dumps(email, salt='email-confirm')
 
-            save_user_in_database(email, password)
+            save_user_in_database(email, generate_password_hash(password).decode('utf-8'))
             send_verification_email(email, token)
             flash(f"Your token is {token}", "success")  # for testing purposes
             # flash("You registered successfully, please check your email to verify your account", "success")
