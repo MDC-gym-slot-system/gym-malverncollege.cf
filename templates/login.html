@@ -1,12 +1,12 @@
 {% extends "head.html" %}
 {% block head %}
     <title>Sign in html page</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/sign_in.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="content-section">
-        <form method="POST" action="{{ url_for('sign_in')}}">
+        <form method="POST" action="{{ url_for('login')}}">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Sign in to book gymslots today!</legend>

@@ -1,0 +1,21 @@
+{% extends "head.html" %}
+
+{% block head %}
+    <title>This is dashboard</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+    <p> You have logged in as {{email}} </p>
+    <div class="container">
+      <button class="btn btn-primary btn-lg btn-block mt-3 mb-3" onclick="window.location.href='{{ url_for('booking') }}'">
+          Book your gym slots!
+      </button>
+      <button class="btn btn-secondary btn-lg btn-block mt-3 mb-3" onclick="window.location.href='{{ url_for('edit_booking')}}'">
+        Edit your gymslots
+      </button>
+      <button class="btn btn-success btn-lg btn-block mt-3 mb-3" onclick="window.location.href='{{ url_for('admin') }}'">
+        Admin page
+      </button>
+    </div>
+{% endblock %}
