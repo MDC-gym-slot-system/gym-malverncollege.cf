@@ -38,7 +38,7 @@ def login():
 
 def send_verification_email(email, token):
     #need to set up email server, wait for email from IT
-    pass
+    return
 
 
 def save_user_in_database(email, password):
@@ -105,15 +105,41 @@ def verify_email(token):
         return redirect(url_for('register'))
 
 
+def change_password(email, new_password):
+    website_db["registered_accounts"].update_one(
+        {"email": email},
+        {"$set": {"password": generate_password_hash(new_password).decode('utf-8')}}
+    )
+
+
 @app.route('/password_reset', methods=['GET', 'POST'])
 def password_reset():
     handle_log_in(is_protected=False, redirect=False)
     form = PasswordReset()
     if request.method == "POST":
         if form.validate_on_submit():
-            flash("You reset your password successfully", "success")
+            token = serializer.dumps([form.email.data, form.confirm_new_password.data], salt='password-reset')
+            send_verification_email(form.email.data, token)
+            flash(f"Your password reset token is {token}", "success")  # for testing purposes
             return redirect(url_for('login'))
-    return render_template('password_reset.html', form=PasswordReset())
+    return render_template('password_reset.html', form=form)
+
+@app.route('/verify_password_reset/<token>', methods=['GET', 'POST'])
+def verify_password_reset(token):
+    try:
+        email_new_password = serializer.loads(token, salt='password-reset', max_age=3600)
+        change_password(email_new_password[0], email_new_password[1])
+        flash("Your password has been reset", "success")
+        return redirect(url_for('login'))
+    except SignatureExpired:
+        flash("Your token is expired, please reset your password again", "danger")
+        return redirect(url_for('password_reset'))
+    except BadTimeSignature:
+        flash("Your token is invalid, please reset your password again", "danger")
+        return redirect(url_for('password_reset'))
+    except Exception as e:
+        flash(f"An unexpected error occurred: {e}", "danger")
+        return redirect(url_for('password_reset'))
 
 
 @app.route('/dashboard')

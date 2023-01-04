@@ -19,7 +19,10 @@ def is_email_verified(form, email):
     found_account = website_db["registered_accounts"].find_one({"email": email.data})
     if found_account:
         if not found_account["verified"]:
-            raise ValidationError('Email not verified, check your email to verify your account')
+            raise ValidationError(
+                'Email not verified, check your email to verify your account<br>'
+                'Reregister if you did not receive an email'
+            )
     elif not found_account:
         raise ValidationError('Email not registered, register an account')
 
@@ -84,6 +87,17 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('register')
 
 
+def is_email_registered_and_verified(form, email):
+    found_account = website_db["registered_accounts"].find_one({"email": email.data})
+    if found_account:
+        if not found_account["verified"]:
+            raise ValidationError('Email not verified, check your email to verify your account')
+    elif not found_account:
+        raise ValidationError('Email not registered')
+
+
 class PasswordReset(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), Email()])
-    submit = SubmitField('submit')
+    email = StringField('email', validators=[DataRequired(), Email(), is_email_registered_and_verified])
+    new_password = PasswordField('new_password', validators=[DataRequired(), is_password_strong_enough])
+    confirm_new_password = PasswordField('confirm_new_password', validators=[DataRequired(), EqualTo('new_password')])
+    submit = SubmitField('reset password')
